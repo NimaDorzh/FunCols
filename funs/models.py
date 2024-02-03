@@ -4,28 +4,29 @@ from django.db import models
 ###Skeleton classes
 
 ##Users model class
-class Users(models.Model):
+class User(models.Model):
     name = models.CharField("")
     lastname = models.CharField("")
     email = models.CharField("")
     phone_number = models.CharField("")
     role_level = models.IntegerField()
     user_link = models.TextField()
+
     #
 ##Users role levels
-class Roles(models.Model):
-    #role_level = models.IntegerField()
+class Role(models.Model):
+    role_level = models.IntegerField()
     role_description = models.CharField()
 
 
 #link to roles and available functions 
 # TODO: HOW TO BETTER REALIZE?
-class Functions(models.Model):
+class Function(models.Model):
     function_title = models.IntegerField()
     
 
 #
-class Stores(models.Model):
+class Store(models.Model):
     store_title = models.TextField()
     # TODO: what is better text path or img field?
     store_logo = models.ImageField()
@@ -34,7 +35,7 @@ class Stores(models.Model):
 
 
 ##Items model class
-class Items(models.Model):
+class Item(models.Model):
     title = models.CharField(max_length=200)
     item_creation_date = models.DateTimeField("date created")
     item_description = models.TextField("")
@@ -44,7 +45,7 @@ class Items(models.Model):
     item_video_path = models.TextField("path to video")
 
 ##Price history class
-class Prices(models.Model):
+class Price(models.Model):
     #price without discount
     typical_price = models.FloatField()
     #price with discount
@@ -53,7 +54,7 @@ class Prices(models.Model):
     #discount TODO: diff typical_price - deal_price
 
 ##Reviews class
-class Reviews(models.Model):
+class Review(models.Model):
     review_creation_date = models.DateTimeField()
     star = models.SmallIntegerField() 
     review_description = models.TextField()
@@ -64,7 +65,7 @@ class Reviews(models.Model):
     likes = models.IntegerField()
 
 ##Addresses class
-class Addresses(models.Model):
+class Address(models.Model):
     # TODO: add list of addreesses
     zipcode = models.SmallIntegerField()
     country = models.CharField()
@@ -72,12 +73,15 @@ class Addresses(models.Model):
 
 
 ##Categories class
-class Categories(models.Model):
+class Category(models.Model):
     category_name = models.CharField("")
 
-
-
 ###Features classes
+
+# renames the instances of the model
+# with their title name
+def __str__(self):
+    return self.title
     
 
 
