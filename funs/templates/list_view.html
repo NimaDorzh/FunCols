@@ -1,0 +1,16 @@
+<div class="main">
+ 
+    {% for data in dataset %}.
+ 
+  <!-- Specify fields to be displayed -->
+  {{ data.name }}<br/>
+  {{ data.lastname }}<br/>
+  {{ data.email }}<br/>
+  {{ data.phone_number }}<br/>
+  {{ data.role_level }}<br/>
+  {{ data.user_link }}<br/>
+    <hr/>
+ 
+    {% endfor %}
+ 
+</div>

@@ -3,20 +3,21 @@ from django.db import models
 
 ###Skeleton classes
 
-##Users model class
-class User(models.Model):
-    name = models.CharField("")
-    lastname = models.CharField("")
-    email = models.CharField("")
-    phone_number = models.CharField("")
-    role_level = models.IntegerField()
-    user_link = models.TextField()
 
-    #
-##Users role levels
-class Role(models.Model):
-    role_level = models.IntegerField()
-    role_description = models.CharField()
+
+##Addresses class
+class Address(models.Model):
+    # TODO: add list of addreesses
+    zipcode = models.SmallIntegerField()
+    country = models.CharField()
+    city = models.CharField()
+
+
+
+
+##Categories class
+class Category(models.Model):
+    category_name = models.CharField("")
 
 
 #link to roles and available functions 
@@ -24,14 +25,6 @@ class Role(models.Model):
 class Function(models.Model):
     function_title = models.IntegerField()
     
-
-#
-class Store(models.Model):
-    store_title = models.TextField()
-    # TODO: what is better text path or img field?
-    store_logo = models.ImageField()
-    store_link = models.TextField()
-
 
 
 ##Items model class
@@ -43,6 +36,7 @@ class Item(models.Model):
     price = models.FloatField()
     item_img_path = models.TextField("path to image")
     item_video_path = models.TextField("path to video")
+
 
 ##Price history class
 class Price(models.Model):
@@ -64,17 +58,27 @@ class Review(models.Model):
     cons = models.CharField()
     likes = models.IntegerField()
 
-##Addresses class
-class Address(models.Model):
-    # TODO: add list of addreesses
-    zipcode = models.SmallIntegerField()
-    country = models.CharField()
-    city = models.CharField()
+    
+##Users role levels
+class Role(models.Model):
+    role_level = models.IntegerField()
+    role_description = models.CharField()
 
+#
+class Store(models.Model):
+    store_title = models.TextField()
+    # TODO: what is better text path or img field?
+    store_logo = models.ImageField()
+    store_link = models.TextField()
 
-##Categories class
-class Category(models.Model):
-    category_name = models.CharField("")
+##Users model class
+class User(models.Model):
+    name = models.CharField("")
+    lastname = models.CharField("")
+    email = models.CharField("")
+    phone_number = models.CharField("")
+    role_level = models.IntegerField()
+    user_link = models.TextField()
 
 ###Features classes
 

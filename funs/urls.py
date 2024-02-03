@@ -6,8 +6,9 @@ urlpatterns = [
     
     #path("", views.index, name="index"),
     path("", views.create_view, name="create_view"),
-
     # TODO: realize url routing
     path("", views.list_view, name="list_view"),
-    
+    path("<id>", views.detail_view, name="detail_view"),
+    path("<id>/update", views.update_view, name="update_view"),
+    path('<id>/delete', views.delete_view, name="delete_view" ),
 ]
