@@ -18,3 +18,4 @@ class FunsForm(forms.ModelForm):
             "role_level",
             "user_link"
         ]
+

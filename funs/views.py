@@ -1,8 +1,8 @@
 from django.shortcuts import (get_object_or_404,
-                              render,
+                              render,HttpResponse,
                               HttpResponseRedirect)
 
-from django.views.generic import ListView, DetailView
+from django.views.generic import View,ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 
 # relative import of forms
@@ -12,6 +12,12 @@ from .forms import FunsForm
 
 
 ### Realizing CRUD
+#TODO:Class Based Generic Views Django (Create, Retrieve, Update, Delete)
+
+class MyView(View):
+    def get(self, request):
+        # <view logic>
+        return HttpResponse('result')
 
 # Create
 def create_view(request):
@@ -91,6 +97,6 @@ def delete_view(request, id):
         obj.delete()
         # after deleting redirect to 
         # home page
-        return HttpResponseRedirect("/")
+        return HttpResponseRedirect("/funs/")
  
     return render(request, "delete_view.html", context)
