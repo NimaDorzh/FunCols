@@ -80,7 +80,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'funcols',
-        'USER': 'nima',
+        'USER': 'postgres',
         'PASSWORD': 'testdjango21',
         'HOST': '127.0.0.1',
         'PORT': '5432',
