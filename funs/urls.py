@@ -1,10 +1,11 @@
 from django.urls import path
-
+from funs.views import MyView
 from . import views
 
 urlpatterns = [
     
     #path("", views.index, name="index"),
+    path('about/', MyView.as_view()),
     path("", views.create_view, name="create_view"),
     # TODO: realize url routing
     path("", views.list_view, name="list_view"),

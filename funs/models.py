@@ -7,7 +7,7 @@ from django.db import models
 
 ##Addresses class
 class Address(models.Model):
-    # TODO: add list of addreesses
+    # TODO: add list of addresses
     zipcode = models.SmallIntegerField()
     country = models.CharField()
     city = models.CharField()
