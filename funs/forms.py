@@ -1,9 +1,11 @@
 from django import forms
-from .models import User
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.models import User
 
 
 # creating a form
 class FunsForm(forms.ModelForm):
+    email = forms.EmailField()
     # create meta class
     class Meta:
         # specify model to be used
@@ -11,11 +13,24 @@ class FunsForm(forms.ModelForm):
 
         # specify fields to be used
         fields = [
+            "username",
+            "email",
+            "password",
             "name",
             "lastname",
-            "email",
             "phone_number",
-            "role_level",
+            "role",
             "user_link"
         ]
+
+# Форма регистрации
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password1', 'password2']
+# Форма аутентификации (built-in Django)
+class UserLoginForm(AuthenticationForm):
+    pass
 

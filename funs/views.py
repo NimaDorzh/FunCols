@@ -4,11 +4,17 @@ from django.shortcuts import (get_object_or_404,
 
 from django.views.generic import View,ListView, DetailView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib import messages
+from django.contrib.auth import login, authenticate
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
 
 # relative import of forms
 from .models import User
-from .forms import FunsForm
-
+from .forms import FunsForm, UserRegisterForm,UserLoginForm
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+import json
 
 
 ### Realizing CRUD
@@ -100,3 +106,32 @@ def delete_view(request, id):
         return HttpResponseRedirect("/funs/")
  
     return render(request, "delete_view.html", context)
+
+# Регистрация
+@csrf_exempt
+def register(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        form = UserCreationForm(data)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return JsonResponse({'success': True}, status=201)
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+    return JsonResponse({'error': 'Invalid method'}, status=405)
+
+
+# Аутентификация (вход)
+@csrf_exempt
+def login_view(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        form = AuthenticationForm(request, data=data)
+        if form.is_valid():
+            user = form.get_user()
+            login(request, user)
+            return JsonResponse({'success': True}, status=200)
+        else:
+            return JsonResponse({'error': form.errors}, status=400)
+    return JsonResponse({'error': 'Invalid method'}, status=405)

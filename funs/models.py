@@ -3,7 +3,24 @@ from django.db import models
 
 ###Skeleton classes
 
+##Users model class
+class User(models.Model):
+    name = models.CharField("")
+    lastname = models.CharField("")
+    email = models.CharField("")
+    #  TODO: how to store password?
+    password = models.CharField("")
+    phone_number = models.CharField("")
+    role = models.IntegerField()
+    permission_id = models.IntegerField()
+    #user_link = models.TextField()
 
+
+##Permissions model class
+class Permissions(models.Model):
+    can_view = models.BooleanField(default=False)
+    can_publish = models.BooleanField(default=False)
+    can_delete = models.BooleanField(default=False)
 
 ##Addresses class
 class Address(models.Model):
@@ -71,14 +88,6 @@ class Store(models.Model):
     store_logo = models.ImageField()
     store_link = models.TextField()
 
-##Users model class
-class User(models.Model):
-    name = models.CharField("")
-    lastname = models.CharField("")
-    email = models.CharField("")
-    phone_number = models.CharField("")
-    role_level = models.IntegerField()
-    user_link = models.TextField()
 
 ###Features classes
 
