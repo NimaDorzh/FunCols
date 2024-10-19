@@ -1,7 +1,7 @@
 from django.urls import path
 from funs.views import MyView
 from . import views
-from .views import register, login_view
+from .views import RegisterView, LoginView
 
 urlpatterns = [
     
@@ -13,6 +13,6 @@ urlpatterns = [
     path("<id>", views.detail_view, name="detail_view"),
     path("<id>/update", views.update_view, name="update_view"),
     path('<id>/delete', views.delete_view, name="delete_view" ),
-    path('register/', register, name='register'),
-    path('login/', login_view, name='login'),
+    path('register/', RegisterView.as_view(), name='register'),
+    path('login/', LoginView.as_view(), name='login'),
 ]

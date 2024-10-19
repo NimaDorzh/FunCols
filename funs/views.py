@@ -10,8 +10,14 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+from rest_framework import status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from rest_framework_simplejwt.tokens import RefreshToken
+
 # relative import of forms
 from .models import User
+from .serializers import RegisterSerializer, LoginSerializer
 from .forms import FunsForm, UserRegisterForm,UserLoginForm
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 import json
@@ -107,31 +113,24 @@ def delete_view(request, id):
  
     return render(request, "delete_view.html", context)
 
-# Регистрация
-@csrf_exempt
-def register(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        form = UserCreationForm(data)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return JsonResponse({'success': True}, status=201)
-        else:
-            return JsonResponse({'error': form.errors}, status=400)
-    return JsonResponse({'error': 'Invalid method'}, status=405)
+class RegisterView(APIView):
+    def post(self, request):
+        serializer = RegisterSerializer(data=request.data)
+        if serializer.is_valid():
+            user = serializer.save()
+            return Response({"message": "Пользователь успешно зарегистрирован"}, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-
-# Аутентификация (вход)
-@csrf_exempt
-def login_view(request):
-    if request.method == 'POST':
-        data = json.loads(request.body)
-        form = AuthenticationForm(request, data=data)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return JsonResponse({'success': True}, status=200)
-        else:
-            return JsonResponse({'error': form.errors}, status=400)
-    return JsonResponse({'error': 'Invalid method'}, status=405)
+class LoginView(APIView):
+    def post(self, request):
+        serializer = LoginSerializer(data=request.data)
+        if serializer.is_valid():
+            user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password'])
+            if user is not None:
+                refresh = RefreshToken.for_user(user)
+                return Response({
+                    'refresh': str(refresh),
+                    'access': str(refresh.access_token),
+                })
+            return Response({"message": "Неверные учетные данные"}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

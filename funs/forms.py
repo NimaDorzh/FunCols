@@ -16,11 +16,11 @@ class FunsForm(forms.ModelForm):
             "username",
             "email",
             "password",
-            "name",
-            "lastname",
-            "phone_number",
-            "role",
-            "user_link"
+           # "name",
+            #"lastname",
+            #"phone_number",
+            #"role",
+            #"user_link"
         ]
 
 # Форма регистрации

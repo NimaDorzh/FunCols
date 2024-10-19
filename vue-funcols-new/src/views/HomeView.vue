@@ -1,13 +1,5 @@
 <template>
-  <nav class="navbar">
-    <ul class="list">
-      <li class="list-item"><a href="/">Главная</a></li>
-      <li class="list-item"><a href="/register">Регистрация</a></li>
-      <li class="list-item"><a href="/login">Вход</a></li>
-      <li class="list-item"><a href="/about">О нас</a></li>
-      <li class="list-item"><a href="/contact">Контакты</a></li>
-    </ul>
-  </nav>
+ 
 </template>
 
 <script>

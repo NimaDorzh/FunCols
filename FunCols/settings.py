@@ -11,17 +11,33 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-
+import json
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+
+with open('credentials/secret_key.txt', 'r') as file:
+    secret_key = file.read()
+
+
+try:
+    # Read the dictionary from the file
+    with open('credentials/databases.json', 'r') as file:
+        db_config = json.load(file)
+
+except FileNotFoundError:
+    print("The file was not found.")
+except json.JSONDecodeError:
+    print("The file contains invalid JSON or is empty.")
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-d-i6w39bvj#xx--u#47qq8b=e#m5jwscxcn_9b4q^)t6qhm_j@'
+SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -39,6 +55,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'corsheaders',  # Для обработки CORS
 ]
 
 MIDDLEWARE = [
@@ -49,7 +67,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+# Настройка CORS
+CORS_ALLOW_ALL_ORIGINS = True
+
+# Настройки Django REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
 
 ROOT_URLCONF = 'FunCols.urls'
 
@@ -76,15 +106,9 @@ WSGI_APPLICATION = 'FunCols.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+#TODO: Store credentials safely
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'funcols',
-        'USER': 'postgres',
-        'PASSWORD': 'testdjango21',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
+    'default': db_config
 }
 
 

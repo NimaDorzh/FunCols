@@ -2,14 +2,14 @@ from django.db import models
 """Models view file"""
 
 ###Skeleton classes
-
 ##Users model class
 class User(models.Model):
+    username = models.CharField("")
+    #  TODO: how to store password?
+    password = models.CharField("")
     name = models.CharField("")
     lastname = models.CharField("")
     email = models.CharField("")
-    #  TODO: how to store password?
-    password = models.CharField("")
     phone_number = models.CharField("")
     role = models.IntegerField()
     permission_id = models.IntegerField()
@@ -29,12 +29,10 @@ class Address(models.Model):
     country = models.CharField()
     city = models.CharField()
 
-
-
-
 ##Categories class
 class Category(models.Model):
     category_name = models.CharField("")
+    name = models.CharField("")
 
 
 #link to roles and available functions 
@@ -90,7 +88,6 @@ class Store(models.Model):
 
 
 ###Features classes
-
 # renames the instances of the model
 # with their title name
 def __str__(self):

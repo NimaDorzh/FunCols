@@ -4,11 +4,11 @@
     <form @submit.prevent="login" class="form-container">
       <div class="form-group">
         <label for="username">Имя пользователя:</label>
-        <input v-model="form.username" type="text" class="form-control" required />
+        <input v-model="username" type="text" class="form-control" required />
       </div>
       <div class="form-group">
         <label for="password">Пароль:</label>
-        <input v-model="form.password" type="password" class="form-control" required />
+        <input v-model="password" type="password" class="form-control" required />
       </div>
       <button type="submit" class="btn btn-primary">Войти</button>
     </form>
@@ -17,45 +17,37 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
-      form: {
-        username: '',
-        password: ''
-      },
-      error: ''
+      username: '',
+      password: '',
+      error: null,  // Добавлена переменная для хранения ошибок
     };
   },
+  
   methods: {
-    async login() {
-      try {
-        const response = await fetch('/accounts/login/', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRFToken': this.getCsrfToken()
-          },
-          body: JSON.stringify(this.form)
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          window.location.href = '/'; // Перенаправление на главную страницу
+    login() {
+      axios.post('http://localhost:8000/api/users/login/', {  // Убедитесь, что URL верный
+        username: this.username,
+        password: this.password,
+      })
+      .then(response => {
+        localStorage.setItem('access_token', response.data.access);
+        localStorage.setItem('refresh_token', response.data.refresh);
+        alert('Вход успешен!');
+        // Здесь можно перенаправить пользователя на главную страницу
+      })
+      .catch(error => {
+        // Проверка на существование сообщения об ошибке
+        if (error.response && error.response.data) {
+          this.error = error.response.data.detail || 'Ошибка входа';  // Используйте свойство detail или общее сообщение
         } else {
-          this.error = data.error || 'Ошибка входа';
+          this.error = 'Ошибка сети';
         }
-      } catch (error) {
-        console.error('Error:', error);
-        this.error = 'Что-то пошло не так.';
-      }
-    },
-    getCsrfToken() {
-      const cookieValue = document.cookie
-        .split('; ')
-        .find(row => row.startsWith('csrftoken='))
-        ?.split('=')[1];
-      return cookieValue || '';
+      });
     }
   }
 };
